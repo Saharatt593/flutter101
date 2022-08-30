@@ -119,7 +119,7 @@ class AppData{
   }
 
   static Future<List<Product>> simulateFetchingProduct(){
-    return Future.delayed(const Duration(seconds:5),() {
+    return Future.delayed(const Duration(seconds:1),() {
       return productList;
     });
   }

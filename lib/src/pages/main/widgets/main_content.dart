@@ -133,9 +133,13 @@ class MainContent extends StatelessWidget {
       decoration: BoxDecoration(
           color: LightColor.lightGrey.withAlpha(100),
           borderRadius: const BorderRadius.all(Radius.circular(10))),
-      child: const TextField(
+      child: TextField(
+        controller: _mainController.searchController,
+        onSubmitted: (_){
+          _mainController.searchAuto();
+        },
         textInputAction: TextInputAction.search,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
             border: InputBorder.none,
             hintText: "Search Products",
             hintStyle: TextStyle(fontSize: 12),

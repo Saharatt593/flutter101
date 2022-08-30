@@ -9,6 +9,14 @@ import 'package:get/state_manager.dart';
 class MainController extends GetxController {
   List<Category> categoryList = [];
   List<Product> productList = [];
+  List<Product> _oriproductList = [];
+
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void onClose() {
+    searchController.dispose();
+  }
 
   @override
   void onReady() {
@@ -34,19 +42,21 @@ class MainController extends GetxController {
 
   void _fetchPricudtAndCatagory() async {
     Get.dialog(
-      AlertDialog(
-        content: Row(
-          children: [
-            const CircularProgressIndicator(),
-            Container(
-              margin: const EdgeInsets.only(left: 8),
-              child: const Text("Loading. . ."),
-            )
-          ],
+        AlertDialog(
+          content: WillPopScope(
+            onWillPop: () async => false,
+            child: Row(
+              children: [
+                const CircularProgressIndicator(),
+                Container(
+                  margin: const EdgeInsets.only(left: 8),
+                  child: const Text("Loading. . ."),
+                )
+              ],
+            ),
+          ),
         ),
-      ),
-      barrierDismissible: false
-    );
+        barrierDismissible: false);
 
     final response = await Future.wait(
       [
@@ -56,11 +66,42 @@ class MainController extends GetxController {
     );
 
     categoryList = response[1] as List<Category>;
-    productList = response[0] as List<Product>;
+    _oriproductList = response[0] as List<Product>;
+    productList = _oriproductList;
 
     Navigator.of(Get.overlayContext!).pop();
 
     update();
+  }
+
+  void search(String search) {
+    if (search.isNotEmpty) {
+      productList = _filterBySelectCategory(search);
+    } else {
+      updateCategorySelected(getSelectedCategory()!);
+    }
+
+    update();
+  }
+
+  void searchAuto() {
+    if (searchController.text.isNotEmpty) {
+      final list = _filterBySelectCategory(searchController.text);
+      if (list.isNotEmpty) {
+        _updateProductSelected(list[0]);
+      }
+      productList = list;
+    } else {
+      updateCategorySelected(getSelectedCategory()!);
+    }
+
+    update();
+  }
+
+  List<Product> _filterBySelectCategory(String value) {
+    return _getProductListByCategory(getSelectedCategory()!)
+        .where((element) => element.name.contains(value))
+        .toList();
   }
 
   Category? getSelectedCategory() {
@@ -76,13 +117,28 @@ class MainController extends GetxController {
     selectedCategory?.isSelected = false;
     category.isSelected = true;
 
-    final productListByCategory = productList
-        .where((element) => element.category == category.name)
-        .toList();
-    updateProductSelected(productListByCategory[0]);
+    final productListByCat = searchController.text.isNotEmpty
+        ? _filterBySelectCategory(searchController.text)
+        : _getProductListByCategory(category);
+
+    productList = productListByCat.toList();
+
+    if (productList.isNotEmpty) {
+      _updateProductSelected(productListByCat[0]);
+    } else {
+      update();
+    }
+
+    // final productListByCategory =  _getProductListByCategory(category);
+    // productList = productListByCategory.toList();
+
+    // final productListByCategory = productList
+    //     .where((element) => element.category == category.name)
+    //     .toList();
+    // _updateProductSelected(productListByCategory[0]);
   }
 
-  void updateProductSelected(Product product) {
+  _updateProductSelected(Product product) {
     final selectedProduct = getSelectedProduct();
     selectedProduct?.isSelected = false;
     product.isSelected = true;
@@ -96,5 +152,11 @@ class MainController extends GetxController {
     } catch (e) {
       return null;
     }
+  }
+
+  List<Product> _getProductListByCategory(Category category) {
+    return _oriproductList
+        .where((element) => element.category == category.name)
+        .toList();
   }
 }
