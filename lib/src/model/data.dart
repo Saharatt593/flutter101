@@ -108,4 +108,12 @@ class AppData{
       return null;
     }
   }
+
+  static double getPrice(){
+    double price = 0 ;
+    for(var x in cartList){
+      price += x.price *x.id;
+    }
+    return price;
+  }
 }

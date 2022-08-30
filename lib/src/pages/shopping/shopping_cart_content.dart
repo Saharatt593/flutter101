@@ -24,7 +24,7 @@ class ShoppingCartContent extends StatelessWidget {
             const SizedBox(
               height: 30,
             ),
-            _submittButtom()
+            _submittButtom(context)
           ],
         ),
       ),
@@ -38,11 +38,56 @@ class ShoppingCartContent extends StatelessWidget {
   }
 
   Widget _price() {
-    return Container();
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          "${AppData.cartList.length} Item ",
+          style: GoogleFonts.mulish(
+              fontSize: 14,
+              fontWeight: FontWeight.w400,
+              color: LightColor.grey),
+        ),
+        Text(
+          "\$${AppData.getPrice()}",
+          style: GoogleFonts.mulish(
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              color: LightColor.black),
+        ),
+      ],
+    );
   }
 
-  Widget _submittButtom() {
-    return Container();
+  Widget _submittButtom(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {},
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              ),
+              backgroundColor: MaterialStateProperty.all(LightColor.orange)),
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            width: AppTheme.fullWidth(context) * .75,
+            child: Text(
+              "But",
+              style: GoogleFonts.mulish(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: LightColor.background),
+            ),
+          ),
+        ),
+        const SizedBox(
+          height: 8,
+        ),
+        // _submittButtomWithElevated(context)
+      ],
+    );
   }
 
   Widget _item(Product e) {
@@ -66,7 +111,14 @@ class ShoppingCartContent extends StatelessWidget {
                     ),
                   ),
                 ),
-                Positioned(left: -20, bottom: -20, child: Image.asset(e.image,height: 114,width: 127,)),
+                Positioned(
+                    left: -20,
+                    bottom: -20,
+                    child: Image.asset(
+                      e.image,
+                      height: 114,
+                      width: 127,
+                    )),
               ],
             ),
           ),
@@ -118,6 +170,33 @@ class ShoppingCartContent extends StatelessWidget {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Widget _submittButtomWithElevated(BuildContext context) {
+    return SizedBox(
+      width: 318,
+      height: 46,
+      child: ElevatedButton(
+        onPressed: () {},
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            ),
+            backgroundColor: MaterialStateProperty.all(LightColor.orange)),
+        child: Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(vertical: 4),
+          width: AppTheme.fullWidth(context) * .75,
+          child: Text(
+            "But",
+            style: GoogleFonts.mulish(
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+                color: LightColor.background),
+          ),
+        ),
       ),
     );
   }
