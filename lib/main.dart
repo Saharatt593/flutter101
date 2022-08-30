@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter101/core/config/routes.dart';
+import 'package:flutter101/core/di/di.dart';
 import 'package:flutter101/core/flavor/flavor_config.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/src/pages/main/main_page.dart';
@@ -7,6 +8,7 @@ import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
+  initGetX();
   runApp(const MyApp());
 }
 

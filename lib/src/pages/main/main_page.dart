@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter101/core/config/routes.dart';
+import 'package:flutter101/core/di/cart_controller.dart';
 import 'package:flutter101/core/themes/light_color.dart';
 import 'package:flutter101/core/widgets/header.dart';
 import 'package:flutter101/src/pages/main/main_contriller.dart';
@@ -67,26 +68,25 @@ class MainPage extends StatelessWidget {
                     border: Border.all(color: LightColor.orange),
                     color: Colors.white,
                   ),
-                  child: Obx(() => Text(
-                        "${_mainController.countRx}",
-                        style: GoogleFonts.mulish(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: LightColor.orange),
-                      )),
-
-                  // child: GetBuilder<MainController>(
-                  //   init: _mainController,
-                  //   builder: (MainController controller){
-                  //     return Text(
-                  //       "${controller.count}",
+                  // child: Obx(() => Text(
+                  //       "${_mainController.countRx}",
                   //       style: GoogleFonts.mulish(
                   //           fontSize: 12,
                   //           fontWeight: FontWeight.w700,
                   //           color: LightColor.orange),
-                  //     );
-                  //   },
-                  // ),
+                  //     )),
+
+                  child: GetBuilder<CartController>(
+                    builder: (CartController controller){
+                      return Text(
+                        "${controller.cartTotal}",
+                        style: GoogleFonts.mulish(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: LightColor.orange),
+                      );
+                    },
+                  ),
 
                   // child: GetX<MainController>(
                   //   init: _mainController,
