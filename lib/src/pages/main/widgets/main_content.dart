@@ -4,18 +4,18 @@ import 'package:flutter101/core/themes/light_color.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/core/widgets/extentions.dart';
 import 'package:flutter101/src/model/data.dart';
-import 'package:flutter101/src/model/category.dart';
+import 'package:flutter101/src/pages/main/main_contriller.dart';
 import 'package:flutter101/src/pages/main/widgets/category_item.dart';
 import 'package:flutter101/src/pages/main/widgets/product_item.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 
-class MainContent extends StatefulWidget {
-  const MainContent({Key? key}) : super(key: key);
+class MainContent extends StatelessWidget {
+  MainContent({Key? key}) : super(key: key);
 
-  @override
-  State<MainContent> createState() => _MainContentState();
-}
+  final _mainController = Get.find<MainController>();
 
-class _MainContentState extends State<MainContent> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -152,15 +152,18 @@ class _MainContentState extends State<MainContent> {
       width: AppTheme.fullWidth(context),
       height: 80,
       // เหมาะสำหรับ List ขนาดเล็ก สร้าง View ขึ้นมาถึงแม้ไม่ถูกแสดงบนหน้าจอ
-      child: ListView(
-        scrollDirection: Axis.horizontal,
-        reverse: false,
-        children: AppData.categoryList
-            .map(
-              (category) => CategoryItem(category: category,onSelected: _onSelected),
-            )
-            .toList(),
-      ),
+      child: GetBuilder<MainController>(builder: (MainController controller) {
+        return ListView(
+          scrollDirection: Axis.horizontal,
+          reverse: false,
+          children: controller.categoryList
+              .map(
+                (category) =>
+                    CategoryItem(category: category, onSelected: _onSelected),
+              )
+              .toList(),
+        );
+      }),
     );
   }
 
@@ -314,33 +317,46 @@ class _MainContentState extends State<MainContent> {
       margin: const EdgeInsets.symmetric(vertical: 10),
       width: AppTheme.fullWidth(context),
       height: AppTheme.fullWidth(context) * .7,
-      child: GridView(
-        physics: const BouncingScrollPhysics(),
-        // Clip to children in Android Native
-        clipBehavior: Clip.none,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 1,
-            childAspectRatio: 4 / 3,
-            mainAxisSpacing: 30,
-            crossAxisSpacing: 20),
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        scrollDirection: Axis.horizontal,
-        children: AppData.productList.where((element) => AppData.getSelectedCategory()?.name == element.category)
-            .map((product) => ProductItem(
-                  product: product,
-          onSelected: _onSelectedProduct,
-                ))
-            .toList(),
-      ),
+      child: GetBuilder<MainController>(builder: (MainController controller) {
+        if (controller.productList.isNotEmpty) {
+          return GridView(
+            physics: const BouncingScrollPhysics(),
+            // Clip to children in Android Native
+            clipBehavior: Clip.none,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 1,
+                childAspectRatio: 4 / 3,
+                mainAxisSpacing: 30,
+                crossAxisSpacing: 20),
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            scrollDirection: Axis.horizontal,
+            children: controller.productList
+                .where((element) =>
+                    controller.getSelectedCategory()?.name == element.category)
+                .map((product) => ProductItem(
+                      product: product,
+                      onSelected: _onSelectedProduct,
+                    ))
+                .toList(),
+          );
+        } else {
+          return const SizedBox();
+        }
+      }),
     );
   }
 
-  void _onSelected(dynamic category){
-    AppData.updateCategorySelected(category);
-    setState(() {});
+  void _onSelected(dynamic category) {
+    _mainController.updateCategorySelected(category);
   }
 
   void _onSelectedProduct(item) {
-    Navigator.of(context).pushNamed(Routes.detailPage);
+    // Navigator.of(context).pushNamed(Routes.detailPage,arguments: {"name":"object"});
+
+    Get.toNamed(Routes.detailPage, arguments: [
+      {"item": item}
+    ]);
+
+    // Navigator.push(Get.context!, MaterialPageRoute(builder: (context)=> const ProductDetailPage()));
   }
 }

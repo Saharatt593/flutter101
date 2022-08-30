@@ -3,6 +3,7 @@ import 'package:flutter101/core/config/routes.dart';
 import 'package:flutter101/core/flavor/flavor_config.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/src/pages/main/main_page.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -16,14 +17,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       theme: AppTheme.lightTheme.copyWith(
         textTheme: GoogleFonts.mulishTextTheme(
           Theme.of(context).textTheme,
         ),
       ),
-      routes: Routes.getRoute(),
+      // unknownRoute:  GetPage(
+      //   name: "rootPage",
+      //   page: () => MainPage(),
+      // ),
+      // routes: Routes.getRoute(),
+      getPages: Routes.getPageRoute(),
       initialRoute: Routes.rootPage,
     );
   }

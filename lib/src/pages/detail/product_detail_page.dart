@@ -4,10 +4,21 @@ import 'package:flutter101/core/themes/light_color.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/core/widgets/extentions.dart';
 import 'package:flutter101/src/model/data.dart';
+import 'package:flutter101/src/pages/detail/product_detail_controller.dart';
+import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetailPage extends StatelessWidget {
-  const ProductDetailPage({Key? key}) : super(key: key);
+  ProductDetailPage({Key? key}) : super(key: key);
+
+  final _productDetailController = Get.put(ProductDetailController());
+
+  // @override
+  // void didChangeDependencies() {
+  //   final arg = (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{}) as Map;
+  //   print(arg);
+  //   super.didChangeDependencies();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +36,10 @@ class ProductDetailPage extends StatelessWidget {
               ],
             ),
             _detailWidget(),
+            _submittButtomWithElevated(context)
           ],
         ),
       )),
-      floatingActionButton: _floating(context),
     );
   }
 
@@ -54,14 +65,14 @@ class ProductDetailPage extends StatelessWidget {
               child: SingleChildScrollView(
                 controller: scrollController,
                 // physics: const BouncingScrollPhysics(),
-                child: _buttomsheetContent(),
+                child: _buttomsheetContent(context),
               ),
             ),
           );
         });
   }
 
-  Widget _buttomsheetContent() {
+  Widget _buttomsheetContent(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -359,7 +370,7 @@ class ProductDetailPage extends StatelessWidget {
                   fontSize: 18,
                   fontWeight: FontWeight.w300,
                   color: LightColor.titleTextColor),
-            )
+            ),
           ],
         ),
       ],
@@ -384,8 +395,35 @@ class ProductDetailPage extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-          _icon(Icons.favorite, context,
-              color: LightColor.red, size: 15, padding: 12),
+           Stack(
+             children: [
+               _icon(Icons.shopping_basket, context,
+                  color: LightColor.red, size: 15, padding: 12),
+               Positioned(
+                 right: -8,
+                 top: -8,
+                 child: Container(
+                   width: 22,
+                   height: 22,
+                   padding: const EdgeInsets.only(left: 2),
+                   alignment: Alignment.center,
+                   decoration: BoxDecoration(
+                     shape: BoxShape.circle,
+                     border: Border.all(color: LightColor.orange),
+                     color: Colors.white,
+                   ),
+                   child:
+                   Text(
+                     "1",
+                     style: GoogleFonts.mulish(
+                         fontSize: 12,
+                         fontWeight: FontWeight.w700,
+                         color: LightColor.orange),
+                   ),
+                 ),
+               )
+             ],
+           ),
         ],
       ),
     );
@@ -480,14 +518,33 @@ class ProductDetailPage extends StatelessWidget {
     );
   }
 
-  Widget _floating(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () {
-          Navigator.of(context).pushNamed(Routes.shoppingCartPage);
-      },
-      backgroundColor: LightColor.orange,
-      child: Icon(Icons.shopping_basket,
-          color: Theme.of(context).floatingActionButtonTheme.backgroundColor),
+  Widget _submittButtomWithElevated(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: SizedBox(
+        width: 318,
+        height: 46,
+        child: ElevatedButton(
+          onPressed: () {},
+          style: ButtonStyle(
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              ),
+              backgroundColor: MaterialStateProperty.all(LightColor.orange)),
+          child: Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            width: AppTheme.fullWidth(context) * .75,
+            child: Text(
+              "But",
+              style: GoogleFonts.mulish(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: LightColor.background),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

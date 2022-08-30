@@ -1,5 +1,6 @@
 import 'package:flutter101/src/model/category.dart';
 import 'package:flutter101/src/model/product.dart';
+import 'package:get/utils.dart';
 
 class AppData{
   static List<Category> categoryList = [
@@ -78,36 +79,36 @@ class AppData{
         category: "Trending Now"),
   ];
 
-  static updateCategorySelected(Category category){
-    final selectedCategory = getSelectedCategory();
-    selectedCategory?.isSelected = false;
-    category.isSelected = true;
+  // static updateCategorySelected(Category category){
+  //   final selectedCategory = getSelectedCategory();
+  //   selectedCategory?.isSelected = false;
+  //   category.isSelected = true;
+  //
+  //   final productListByCategory = productList.where((element) => element.category == category.name).toList();
+  //   updateProductSelected(productListByCategory[0]);
+  // }
+  //
+  // static Category? getSelectedCategory(){
+  //   try {
+  //     return categoryList.firstWhere((element) => element.isSelected);
+  //   }catch (e){
+  //     return null;
+  //   }
+  // }
 
-    final productListByCategory = productList.where((element) => element.category == category.name).toList();
-    updateProductSelected(productListByCategory[0]);
-  }
+  // static void updateProductSelected(Product product) {
+  //   final selectedProduct = getSelectedProduct();
+  //   selectedProduct?.isSelected = false;
+  //   product.isSelected = true;
+  // }
 
-  static Category? getSelectedCategory(){
-    try {
-      return categoryList.firstWhere((element) => element.isSelected);
-    }catch (e){
-      return null;
-    }
-  }
-
-  static void updateProductSelected(Product product) {
-    final selectedProduct = getSelectedProduct();
-    selectedProduct?.isSelected = false;
-    product.isSelected = true;
-  }
-
-  static Product? getSelectedProduct(){
-    try {
-      return productList.firstWhere((element) => element.isSelected);
-    }catch (e){
-      return null;
-    }
-  }
+  // static Product? getSelectedProduct(){
+  //   try {
+  //     return productList.firstWhere((element) => element.isSelected);
+  //   }catch (e){
+  //     return null;
+  //   }
+  // }
 
   static double getPrice(){
     double price = 0 ;
@@ -115,5 +116,17 @@ class AppData{
       price += x.price *x.id;
     }
     return price;
+  }
+
+  static Future<List<Product>> simulateFetchingProduct(){
+    return Future.delayed(const Duration(seconds:5),() {
+      return productList;
+    });
+  }
+
+  static Future<List<Category>> simulateFetchingCaralog(){
+    return Future.delayed(const Duration(seconds:1),() {
+      return categoryList;
+    });
   }
 }
