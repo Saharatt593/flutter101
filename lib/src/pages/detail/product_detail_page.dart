@@ -6,16 +6,20 @@ import 'package:flutter101/core/enum/available_size.dart';
 import 'package:flutter101/core/themes/light_color.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/core/widgets/extentions.dart';
+import 'package:flutter101/src/model/cart_item.dart';
 import 'package:flutter101/src/model/data.dart';
 import 'package:flutter101/src/pages/detail/product_detail_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductDetailPage extends StatelessWidget {
   ProductDetailPage({Key? key}) : super(key: key);
 
   final _productDetailController = Get.put(ProductDetailController());
+  final _cartController = Get.find<CartController>();
 
   // @override
   // void didChangeDependencies() {
@@ -229,7 +233,7 @@ class ProductDetailPage extends StatelessWidget {
 
   Widget _colorWidget(AvailableColor color, {bool isSelected = false}) {
     return GestureDetector(
-      onTap: (){
+      onTap: () {
         _productDetailController.setSeletedColor(color);
       },
       child: CircleAvatar(
@@ -289,7 +293,10 @@ class ProductDetailPage extends StatelessWidget {
           Stack(
             children: [
               _icon(Icons.shopping_basket, context,
-                  color: LightColor.red, size: 15, padding: 12),
+                  color: LightColor.grey, size: 15, padding: 12
+              ,action: (){
+                    Get.toNamed(Routes.shoppingCartPage);
+                  }),
               Positioned(
                 right: 0,
                 top: 0,
@@ -303,17 +310,15 @@ class ProductDetailPage extends StatelessWidget {
                     border: Border.all(color: Colors.white),
                     color: LightColor.orange,
                   ),
-                  child: GetBuilder<CartController>(
-                    builder: (controller) {
-                      return Text(
-                        "${controller.cartTotal}",
-                        style: GoogleFonts.mulish(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
-                      );
-                    }
-                  ),
+                  child: GetBuilder<CartController>(builder: (controller) {
+                    return Text(
+                      "${controller.cartTotal}",
+                      style: GoogleFonts.mulish(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
+                    );
+                  }),
                 ),
               )
             ],
@@ -419,7 +424,24 @@ class ProductDetailPage extends StatelessWidget {
         width: 318,
         height: 46,
         child: ElevatedButton(
-          onPressed: () {},
+          onPressed: () {
+            _cartController.addItemToCart(
+              CartItem(
+                  _productDetailController.produc,
+                  _productDetailController.selectColor,
+                  _productDetailController.selectSize),
+            );
+
+            Fluttertoast.showToast(
+                msg: "Add to Cart",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.TOP,
+                timeInSecForIosWeb: 1,
+                backgroundColor: Colors.black,
+                textColor: Colors.white,
+                fontSize: 16.0
+            );
+          },
           style: ButtonStyle(
               shape: MaterialStateProperty.all(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),

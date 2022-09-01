@@ -109,14 +109,14 @@ class AppData{
   //     return null;
   //   }
   // }
-
-  static double getPrice(){
-    double price = 0 ;
-    for(var x in cartList){
-      price += x.price *x.id;
-    }
-    return price;
-  }
+  //
+  // static double getPrice(){
+  //   double price = 0 ;
+  //   for(var x in cartList){
+  //     price += x.price *x.id;
+  //   }
+  //   return price;
+  // }
 
   static Future<List<Product>> simulateFetchingProduct(){
     return Future.delayed(const Duration(seconds:1),() {

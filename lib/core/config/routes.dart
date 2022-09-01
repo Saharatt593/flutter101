@@ -31,7 +31,7 @@ class Routes {
       ),
       GetPage(
         name: shoppingCartPage,
-        page: () =>const ShoppingCartPage(),
+        page: () => ShoppingCartPage(),
           transition: Transition.fade
       ),
     ];
