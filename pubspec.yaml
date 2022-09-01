@@ -41,6 +41,14 @@ dependencies:
 
   fluttertoast: ^8.0.9
 
+  dio: ^4.0.6
+
+  internet_connection_checker: ^0.0.1+4
+
+  connectivity_plus: ^2.3.6+1
+
+  logger: ^1.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

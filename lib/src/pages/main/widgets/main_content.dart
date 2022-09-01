@@ -51,7 +51,7 @@ class MainContent extends StatelessWidget {
             child: _textField(),
           ),
           const SizedBox(width: 20),
-          _icon(context, Icons.filter_list, color: Colors.black54)
+          _icon(context, Icons.filter_list, color: Colors.black54,)
         ],
       ),
     );
@@ -69,7 +69,9 @@ class MainContent extends StatelessWidget {
         icon,
         color: color,
       ),
-    ).ripple(() {}, borderRadius: const BorderRadius.all(Radius.circular(13)));
+    ).ripple(() {
+      _mainController.get();
+    }, borderRadius: const BorderRadius.all(Radius.circular(13)));
   }
 
   Widget _textFieldShowcase() {

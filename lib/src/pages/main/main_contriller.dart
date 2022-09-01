@@ -1,10 +1,15 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter101/src/model/data.dart';
 import 'package:flutter101/src/model/category.dart';
 import 'package:flutter101/src/model/product.dart';
+import 'package:flutter101/src/model/product_data.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:get/state_manager.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:logger/logger.dart';
 
 class MainController extends GetxController {
   List<Category> categoryList = [];
@@ -158,5 +163,43 @@ class MainController extends GetxController {
     return _oriproductList
         .where((element) => element.category == category.name)
         .toList();
+  }
+
+  void get() async {
+    if (await _hasInternet()) {
+      Response response;
+      var dio = Dio();
+      var logger = Logger();
+    dio.interceptors.add(InterceptorsWrapper(
+      onResponse: (optin,handler) async{
+        logger.i(optin.data);
+        logger.i(optin.headers);
+      }
+    ));
+// // // customization
+//     dio.interceptors.add(LogInterceptor(
+//         requestHeader: true,
+//         requestBody: true,
+//         responseBody: true,
+//         responseHeader: false,
+//         error: true));
+
+      response = await dio.get('https://jsonblob.com/api/1014809807110291456');
+      final data = ProductData.fromJson(response.data);
+
+      print("${data.result!.name}");
+    }else{
+      print("No Internet");
+    }
+  }
+
+  Future<bool> _hasInternet() async {
+    final connectResult = await Connectivity().checkConnectivity();
+
+    if (connectResult == ConnectivityResult.mobile ||
+        connectResult == ConnectivityResult.wifi) {
+      return await InternetConnectionChecker().hasConnection;
+    }
+    return false;
   }
 }
