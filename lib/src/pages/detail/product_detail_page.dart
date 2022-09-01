@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter101/core/config/routes.dart';
+import 'package:flutter101/core/di/cart_controller.dart';
+import 'package:flutter101/core/enum/available_color.dart';
+import 'package:flutter101/core/enum/available_size.dart';
 import 'package:flutter101/core/themes/light_color.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/core/widgets/extentions.dart';
 import 'package:flutter101/src/model/data.dart';
 import 'package:flutter101/src/pages/detail/product_detail_controller.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -93,7 +97,7 @@ class ProductDetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              "NIKE AIR MAX 200",
+              _productDetailController.produc.name.toString(),
               style: GoogleFonts.mulish(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
@@ -115,7 +119,7 @@ class ProductDetailPage extends StatelessWidget {
                       width: 5,
                     ),
                     Text(
-                      "240",
+                      _productDetailController.produc.price.toString(),
                       style: GoogleFonts.mulish(
                           fontSize: 27,
                           fontWeight: FontWeight.w700,
@@ -152,98 +156,15 @@ class ProductDetailPage extends StatelessWidget {
         const SizedBox(
           height: 20,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(
-                  color: LightColor.lightGrey,
-                ),
-              ),
-              height: 40,
-              width: 80,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "US 6",
-                    style: GoogleFonts.mulish(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: LightColor.titleTextColor),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                color: LightColor.orange,
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
-              height: 40,
-              width: 80,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "US 7",
-                    style: GoogleFonts.mulish(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: LightColor.lightGrey),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(
-                    color: LightColor.lightGrey,
-                  )),
-              height: 40,
-              width: 80,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "US 8",
-                    style: GoogleFonts.mulish(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: LightColor.titleTextColor),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  border: Border.all(
-                    color: LightColor.lightGrey,
-                  )),
-              height: 40,
-              width: 80,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "US 9",
-                    style: GoogleFonts.mulish(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: LightColor.titleTextColor),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+        GetBuilder<ProductDetailController>(builder: (controller) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: controller.availableSize
+                .map((e) =>
+                    _sizeWidget(e, isSelected: e == controller.selectSize))
+                .toList(),
+          );
+        }),
         const SizedBox(
           height: 20,
         ),
@@ -261,90 +182,19 @@ class ProductDetailPage extends StatelessWidget {
         const SizedBox(
           height: 10,
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: LightColor.orange.withAlpha(40),
-                ),
-                const CircleAvatar(
-                  radius: 10,
-                  backgroundColor: LightColor.orange,
-                  child: Icon(Icons.check_outlined,
-                      color: LightColor.yellowColor, size: 17),
-                ),
-              ],
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: LightColor.lightBlue.withAlpha(40),
-                ),
-                const CircleAvatar(
-                  radius: 10,
-                  backgroundColor: LightColor.lightBlue,
-                )
-              ],
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: LightColor.black.withAlpha(40),
-                ),
-                const CircleAvatar(
-                  radius: 10,
-                  backgroundColor: LightColor.black,
-                )
-              ],
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: LightColor.red.withAlpha(40),
-                ),
-                const CircleAvatar(
-                  radius: 10,
-                  backgroundColor: LightColor.red,
-                )
-              ],
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                CircleAvatar(
-                  radius: 20,
-                  backgroundColor: LightColor.skyBlue.withAlpha(40),
-                ),
-                const CircleAvatar(
-                  radius: 10,
-                  backgroundColor: LightColor.skyBlue,
-                )
-              ],
-            )
-          ],
-        ),
+        GetBuilder<ProductDetailController>(builder: (controller) {
+          return Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: controller.availableColor
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: _colorWidget(e,
+                          isSelected: e == controller.selectColor),
+                    ),
+                  )
+                  .toList());
+        }),
         const SizedBox(
           height: 15,
         ),
@@ -377,6 +227,47 @@ class ProductDetailPage extends StatelessWidget {
     );
   }
 
+  Widget _colorWidget(AvailableColor color, {bool isSelected = false}) {
+    return GestureDetector(
+      onTap: (){
+        _productDetailController.setSeletedColor(color);
+      },
+      child: CircleAvatar(
+        radius: 12,
+        backgroundColor: color.color.withAlpha(150),
+        child: isSelected
+            ? Icon(
+                Icons.check_circle,
+                color: color.color,
+                size: 18,
+              )
+            : CircleAvatar(radius: 7, backgroundColor: color.color),
+      ),
+    );
+  }
+
+  Widget _sizeWidget(AvailableSize size, {bool isSelected = false}) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(
+            color: LightColor.iconColor,
+            style: !isSelected ? BorderStyle.solid : BorderStyle.none),
+        borderRadius: const BorderRadius.all(Radius.circular(13)),
+        color: isSelected ? LightColor.orange : Colors.transparent,
+      ),
+      child: Text(size.name,
+          style: GoogleFonts.mulish(
+            fontSize: 16,
+            fontWeight: FontWeight.w700,
+            color:
+                isSelected ? LightColor.background : LightColor.titleTextColor,
+          )),
+    ).ripple(() {
+      _productDetailController.setSeletedSize(size);
+    }, borderRadius: const BorderRadius.all(Radius.circular(13)));
+  }
+
   Widget _appBar(BuildContext context) {
     return Container(
       padding: AppTheme.padding,
@@ -395,35 +286,38 @@ class ProductDetailPage extends StatelessWidget {
               Navigator.of(context).pop();
             },
           ),
-           Stack(
-             children: [
-               _icon(Icons.shopping_basket, context,
+          Stack(
+            children: [
+              _icon(Icons.shopping_basket, context,
                   color: LightColor.red, size: 15, padding: 12),
-               Positioned(
-                 right: -8,
-                 top: -8,
-                 child: Container(
-                   width: 22,
-                   height: 22,
-                   padding: const EdgeInsets.only(left: 2),
-                   alignment: Alignment.center,
-                   decoration: BoxDecoration(
-                     shape: BoxShape.circle,
-                     border: Border.all(color: LightColor.orange),
-                     color: Colors.white,
-                   ),
-                   child:
-                   Text(
-                     "1",
-                     style: GoogleFonts.mulish(
-                         fontSize: 12,
-                         fontWeight: FontWeight.w700,
-                         color: LightColor.orange),
-                   ),
-                 ),
-               )
-             ],
-           ),
+              Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  width: 22,
+                  height: 22,
+                  padding: const EdgeInsets.only(left: 2),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white),
+                    color: LightColor.orange,
+                  ),
+                  child: GetBuilder<CartController>(
+                    builder: (controller) {
+                      return Text(
+                        "${controller.cartTotal}",
+                        style: GoogleFonts.mulish(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white),
+                      );
+                    }
+                  ),
+                ),
+              )
+            ],
+          ),
         ],
       ),
     );
@@ -536,7 +430,7 @@ class ProductDetailPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4),
             width: AppTheme.fullWidth(context) * .75,
             child: Text(
-              "But",
+              "Add to Cart",
               style: GoogleFonts.mulish(
                   fontSize: 18,
                   fontWeight: FontWeight.w500,
