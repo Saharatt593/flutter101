@@ -7,7 +7,7 @@ import 'package:flutter101/src/pages/main/main_page.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void main() {
+void mainApp() {
   initGetX();
   runApp(const MyApp());
 }

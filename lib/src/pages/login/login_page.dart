@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter101/core/flavor/flavor_config.dart';
 import 'package:flutter101/core/themes/light_color.dart';
 import 'package:flutter101/src/pages/login/auth_controller.dart';
 import 'package:flutter101/src/pages/login/login_page_controller.dart';
@@ -24,6 +25,7 @@ class LoginPage extends StatelessWidget {
             Image.asset("assets/logo.png"),
             _loginWithKeyCloak(),
             _bypassLoginButton(),
+            Text("${FlavorConfig.instance.name}")
           ],
         ),
       ),

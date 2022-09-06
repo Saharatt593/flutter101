@@ -1,4 +1,3 @@
-
 import 'package:flutter101/core/flavor/string_utils.dart';
 
 enum Flavor { DEV, PRODUCTION }
@@ -18,9 +17,7 @@ class FlavorConfig {
 
   static late FlavorConfig _instance;
 
-  factory FlavorConfig(
-      {required Flavor flavor,
-      required FlavorValues values}) {
+  factory FlavorConfig({required Flavor flavor, required FlavorValues values}) {
     _instance = FlavorConfig._internal(
         flavor, StringUtils.enumName(flavor.toString()), values);
     return _instance;
