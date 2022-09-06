@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter101/core/config/routes.dart';
 import 'package:flutter101/core/config/shared_preferences_key.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,6 +12,8 @@ class AuthController extends GetxController {
   final String _clientId = 'mobile';
   final String _redirectUrl = 'dolappeal://auth';
   final List<String> _scopes = <String>['openid', 'email', 'profile'];
+
+  final _prefs = const FlutterSecureStorage();
 
   /// ข้อมูล url ต่างๆมาจาก Keycloak : https://apidcdev.dol.go.th/auth/realms/master/.well-known/openid-configuration
   final AuthorizationServiceConfiguration _serviceConfiguration =
@@ -64,16 +67,22 @@ class AuthController extends GetxController {
         result.refreshToken?.isNotEmpty == true &&
         result.idToken?.isNotEmpty == true
     ) {
-      await prefs.setString(
-          SharedPreferencesKey.KEY_ACCESS_TOKEN, result.accessToken!);
-      await prefs.setString(
-          SharedPreferencesKey.KEY_REFRESH_TOKEN, result.refreshToken!);
-      await prefs.setString(
-          SharedPreferencesKey.KEY_TOKEN_ID, result.idToken!);
+      // await prefs.setString(
+      //     SharedPreferencesKey.KEY_ACCESS_TOKEN, result.accessToken!);
+      // await prefs.setString(
+      //     SharedPreferencesKey.KEY_REFRESH_TOKEN, result.refreshToken!);
+      // await prefs.setString(
+      //     SharedPreferencesKey.KEY_TOKEN_ID, result.idToken!);
 
-      final String? action =
-      prefs.getString(SharedPreferencesKey.KEY_ACCESS_TOKEN);
-      print(action);
+      // final String? action =
+      // prefs.getString(SharedPreferencesKey.KEY_ACCESS_TOKEN);
+
+      await _prefs.write(key: SharedPreferencesKey.KEY_ACCESS_TOKEN,value: result.accessToken!);
+      await _prefs.write(key: SharedPreferencesKey.KEY_REFRESH_TOKEN,value: result.refreshToken!);
+      await _prefs.write(key: SharedPreferencesKey.KEY_TOKEN_ID,value: result.idToken!);
+
+      print(await _prefs.read(key: SharedPreferencesKey.KEY_ACCESS_TOKEN));
+      // print(action);
 
       Get.offAllNamed(Routes.mainPage);
     }
@@ -86,9 +95,11 @@ class AuthController extends GetxController {
 
   void endSession() async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-      final String? tokenId = prefs.getString(
-          SharedPreferencesKey.KEY_TOKEN_ID);
+      // final prefs = await SharedPreferences.getInstance();
+      // final String? tokenId = prefs.getString(
+      //     SharedPreferencesKey.KEY_TOKEN_ID);
+
+      final String? tokenId = await _prefs.read(key: SharedPreferencesKey.KEY_TOKEN_ID);
       if (tokenId?.isNotEmpty == true) {
         await _appAuth.endSession(EndSessionRequest(
             idTokenHint:tokenId,
