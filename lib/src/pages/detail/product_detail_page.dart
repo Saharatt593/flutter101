@@ -287,7 +287,9 @@ class ProductDetailPage extends StatelessWidget {
             borderColor: LightColor.darkgrey,
             isOutline: true,
             action: () {
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
+
+              Get.back();
             },
           ),
           Stack(

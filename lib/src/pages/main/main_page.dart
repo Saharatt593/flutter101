@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter101/core/config/routes.dart';
 import 'package:flutter101/core/di/cart_controller.dart';
 import 'package:flutter101/core/themes/light_color.dart';
+import 'package:flutter101/core/widgets/custom_confirm_dialog.dart';
 import 'package:flutter101/core/widgets/header.dart';
+import 'package:flutter101/src/pages/login/auth_controller.dart';
 import 'package:flutter101/src/pages/main/main_contriller.dart';
 import 'package:flutter101/src/pages/main/widgets/main_content.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -17,17 +22,55 @@ class MainPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children:  <Widget>[
-            const Header(headLine1: "Our", headLine2: "Products"),
-            Expanded(child: MainContent()),
-          ],
+    return WillPopScope(
+      onWillPop: () async {
+        await showDialog(
+            context: context,
+            builder: (ctx) {
+              return CustomConfirmDialog(
+                title: "ยืนยันปิดแอปพลิเคชั่น ?",
+                description: "",
+                positiveText: "ยืนยัน",
+                negativeText: "ยกเลิก",
+                assetImage: "assets/logout.svg",
+                positiveHandler: () async {
+                  Get.find<AuthController>().endSession();
+
+
+                  // Get.offAllNamed(Routes.rootPage);
+
+                  // if(Platform.isIOS){
+                  //   try{
+                  //     exit(0);
+                  //   } catch( e ){
+                  //     SystemNavigator.pop();
+                  //   }
+                  // }else{
+                  //   try{
+                  //     SystemNavigator.pop();
+                  //   } catch( e ){
+                  //     exit(0);
+                  //   }
+                  // }
+                },
+                negativeHandler: () async {},
+              );
+            });
+
+        return Future.value(false);
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              const Header(headLine1: "Our", headLine2: "Products"),
+              Expanded(child: MainContent()),
+            ],
+          ),
         ),
+        floatingActionButton: _flotingButton(context),
       ),
-      floatingActionButton: _flotingButton(context),
     );
   }
 
@@ -77,7 +120,7 @@ class MainPage extends StatelessWidget {
                   //     )),
 
                   child: GetBuilder<CartController>(
-                    builder: (CartController controller){
+                    builder: (CartController controller) {
                       return Text(
                         "${controller.cartTotal}",
                         style: GoogleFonts.mulish(
@@ -100,7 +143,6 @@ class MainPage extends StatelessWidget {
                   //     );
                   //   },
                   // ),
-
                 ),
               ),
             ],

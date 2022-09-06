@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter101/core/themes/light_color.dart';
+import 'package:flutter101/src/pages/login/auth_controller.dart';
 import 'package:flutter101/src/pages/login/login_page_controller.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
@@ -8,7 +9,8 @@ import 'package:google_fonts/google_fonts.dart';
 class LoginPage extends StatelessWidget {
   LoginPage({Key? key}) : super(key: key);
 
-  final _loginPageController = Get.put(LoginPageController());
+  // final _loginPageController = Get.put(LoginPageController());
+  final _authController = Get.find<AuthController>();
   // final _loginPageController = Get.lazyPut<LoginPageController>(() => LoginPageController());
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,7 @@ class LoginPage extends StatelessWidget {
       width: 250,
       child: ElevatedButton(
         onPressed: () {
-          _loginPageController.signInWithAutoCodeExchange();
+          _authController.signInWithAutoCodeExchange();
         },
         style: ElevatedButton.styleFrom(
             primary: Colors.white,
@@ -55,7 +57,9 @@ class LoginPage extends StatelessWidget {
     return SizedBox(
       width: 250,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          _authController.bypassLogin();
+        },
         style: ElevatedButton.styleFrom(
           primary: LightColor.orange,
           onPrimary: LightColor.orange,
