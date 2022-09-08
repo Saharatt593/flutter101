@@ -1,3 +1,5 @@
+
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter101/core/config/routes.dart';
 import 'package:flutter101/core/di/di.dart';
@@ -9,6 +11,9 @@ import 'package:google_fonts/google_fonts.dart';
 
 void mainApp() {
   initGetX();
+
+  Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
