@@ -10,6 +10,7 @@ class Routes {
   static const detailPage = "/detail";
   static const shoppingCartPage = "/shoppingCart";
   static const mainPage = "/main";
+  static const nearbyStorePage = "/nearbyStorePage";
 
   // static Map<String, WidgetBuilder> getRoute() {
   //   return <String, WidgetBuilder>{
@@ -38,6 +39,11 @@ class Routes {
       ),
       GetPage(
         name: shoppingCartPage,
+        page: () => ShoppingCartPage(),
+          transition: Transition.fade
+      ),
+      GetPage(
+        name: nearbyStorePage,
         page: () => ShoppingCartPage(),
           transition: Transition.fade
       ),

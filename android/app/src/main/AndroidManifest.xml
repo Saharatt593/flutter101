@@ -1,7 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter101">
     <uses-permission android:name="android.permission.INTERNET"/>
-   <application
+    <uses-permission
+        android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+
+    <application
         android:label="@string/app_name"
        android:name="androidx.multidex.MultiDexApplication"
        android:icon="@mipmap/ic_launcher"
@@ -32,5 +38,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBQikPUK-8Un-OTFVQJ54LzzZejPMIg5Z8"/>
     </application>
 </manifest>

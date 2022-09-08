@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter101/core/config/routes.dart';
 import 'package:flutter101/core/themes/light_color.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/core/widgets/extentions.dart';
+import 'package:get/route_manager.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({Key? key, required this.title}) : super(key: key);
@@ -18,8 +20,15 @@ class CustomAppBar extends StatelessWidget {
           _icon(context, Icons.sort, color: Colors.black54),
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(13)),
-            child: Image.asset("assets/user.png"),
-          ).ripple(() {}, borderRadius: const BorderRadius.all(Radius.circular(13)))
+            child: Image.asset(
+              "assets/pin.png",
+              width: 25,
+              height: 25,
+              color: LightColor.orange,
+            ),
+          ).ripple(() {
+            Get.toNamed(Routes.nearbyStorePage);
+          }, borderRadius: const BorderRadius.all(Radius.circular(13)))
         ],
       ),
     );
