@@ -1,13 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter101/src/pages/nearby_store_page/nearby_store_page_controller.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NearbyStorePage extends StatelessWidget {
-  const NearbyStorePage({Key? key}) : super(key: key);
+  NearbyStorePage({Key? key}) : super(key: key);
+
+  final _nearbyStorePageController = Get.put(NearbyStorePageController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text("NearbyStore"),
+      body: GoogleMap(
+        mapType: MapType.hybrid,
+        initialCameraPosition: _nearbyStorePageController.kGooglePlex,
+        onMapCreated: (GoogleMapController controller) {
+          _nearbyStorePageController.controller.complete(controller);
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _nearbyStorePageController.goToTheLake,
+        label: Text('To the lake!'),
+        icon: Icon(Icons.directions_boat),
       ),
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter101/src/pages/detail/product_detail_page.dart';
 import 'package:flutter101/src/pages/login/login_page.dart';
 import 'package:flutter101/src/pages/main/main_page.dart';
+import 'package:flutter101/src/pages/nearby_store_page/nearby_store_page.dart';
 import 'package:flutter101/src/pages/shopping/shopping_cart_page.dart';
 import 'package:get/route_manager.dart';
 
@@ -44,7 +45,7 @@ class Routes {
       ),
       GetPage(
         name: nearbyStorePage,
-        page: () => ShoppingCartPage(),
+        page: () => NearbyStorePage(),
           transition: Transition.fade
       ),
     ];
