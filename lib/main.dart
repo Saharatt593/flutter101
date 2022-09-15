@@ -3,9 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter101/core/config/fcm/fcm_notification.dart';
 import 'package:flutter101/core/config/routes.dart';
 import 'package:flutter101/core/di/di.dart';
+import 'package:flutter101/core/di/local_controller.dart';
 import 'package:flutter101/core/flavor/flavor_config.dart';
+import 'package:flutter101/core/local/localizations_delegate.dart';
 import 'package:flutter101/core/themes/theme.dart';
 import 'package:flutter101/src/pages/main/main_page.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -40,9 +44,26 @@ class MyApp extends StatelessWidget {
       // routes: Routes.getRoute(),
       getPages: Routes.getPageRoute(),
       initialRoute: Routes.rootPage,
-      locale: const Locale('en', 'US'),
-      translations: LocaleString(),
-      fallbackLocale: const Locale('th', 'TH'),
+      // locale: const Locale('en', 'US'),
+      // translations: LocaleString(),
+      // fallbackLocale: const Locale('th', 'TH'),
+      locale: Get.locale,
+      supportedLocales: LocalController.supportedLocales,
+      localizationsDelegates:  [
+        AppLocalizationsDelegate(),
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      localeResolutionCallback: (locale, supportedLocales) {
+        for (var supportedLocale in supportedLocales) {
+          if (supportedLocale.languageCode == locale?.languageCode &&
+              supportedLocale.countryCode == locale?.countryCode) {
+            return supportedLocale;
+          }
+        }
+        return supportedLocales.first;
+      },
     );
   }
 }

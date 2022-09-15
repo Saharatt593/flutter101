@@ -57,6 +57,9 @@ dependencies:
 
   flutter_secure_storage: ^6.0.0
 
+  flutter_localizations:
+    sdk: flutter
+
   firebase_core: ^1.20.0
   google_maps_flutter: ^2.2.0
   geolocator: ^9.0.1
