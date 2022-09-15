@@ -1,4 +1,3 @@
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter101/core/config/fcm/fcm_notification.dart';
@@ -10,7 +9,7 @@ import 'package:flutter101/src/pages/main/main_page.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void mainApp() async{
+void mainApp() async {
   initGetX();
 
   await Firebase.initializeApp();
@@ -41,8 +40,23 @@ class MyApp extends StatelessWidget {
       // routes: Routes.getRoute(),
       getPages: Routes.getPageRoute(),
       initialRoute: Routes.rootPage,
+      locale: const Locale('en', 'US'),
+      translations: LocaleString(),
+      fallbackLocale: const Locale('th', 'TH'),
     );
   }
+}
+
+class LocaleString extends Translations {
+  @override
+  Map<String, Map<String, String>> get keys => {
+        'en_US': {
+          'hello': 'Hello World',
+        },
+        'th_TH': {
+          'hello': 'สวัสดี',
+        }
+      };
 }
 
 class MyHomePage extends StatefulWidget {
@@ -64,7 +78,9 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text("Flavor: ${FlavorConfig.instance.name}"),
-            const Divider(height: 8,),
+            const Divider(
+              height: 8,
+            ),
             Image.asset(
               "assets/show_1.png",
               width: 100,
