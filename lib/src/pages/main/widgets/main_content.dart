@@ -51,7 +51,18 @@ class MainContent extends StatelessWidget {
             child: _textField(),
           ),
           const SizedBox(width: 20),
-          _icon(context, Icons.filter_list, color: Colors.black54,)
+          _icon(
+            context,
+            Icons.filter_list,
+            color: Colors.black54,
+          ),
+          _icon(
+            context,
+            Icons.image,
+            color: Colors.black54,
+          ).ripple(() {
+            Get.toNamed(Routes.picture);
+          }),
         ],
       ),
     );
@@ -137,7 +148,7 @@ class MainContent extends StatelessWidget {
           borderRadius: const BorderRadius.all(Radius.circular(10))),
       child: TextField(
         controller: _mainController.searchController,
-        onSubmitted: (_){
+        onSubmitted: (_) {
           _mainController.searchAuto();
         },
         textInputAction: TextInputAction.search,

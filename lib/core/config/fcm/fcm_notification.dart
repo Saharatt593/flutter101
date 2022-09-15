@@ -33,7 +33,7 @@ class FCMNotification {
 class PushNotificationService {
   Future<void> init() async {
     RemoteMessage? initMes =
-        await FirebaseMessaging.instance.getInitialMessage();
+    await FirebaseMessaging.instance.getInitialMessage();
 
     _onNotificationClicked(initMes);
 
@@ -66,15 +66,15 @@ class PushNotificationService {
   registerNotificationListeners() async {
     AndroidNotificationChannel channel = androidNotificationChannel();
     final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-        FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
+        AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
 
     var androidSetting =
-        const AndroidInitializationSettings("@mipmap/ic_launcher");
+    const AndroidInitializationSettings("@mipmap/ic_launcher");
 
     var iOSSettings = const IOSInitializationSettings(
       requestSoundPermission: false,
@@ -111,9 +111,9 @@ class PushNotificationService {
         // TODO : Do stuff with Foreground notification click (Foreground state)
         // TODO : ข้อสังเกตจากการทดสอบเองคือใน iOS ไม่ว่าจะเป็นการทำงาน Background / Foreground จะไม่เข้าฟังก์ชันนี้แต่จะเข้า FirebaseMessaging.onMessageOpenedApp แทน | ใน Android ทำงานปกติ
         // This function handles the click in the notification when the app is in foreground
-        // if(recentMessage != null){
-        //   recentMessage!.data['type'] = "setting";
-        // }
+        if (recentMessage != null) {
+          recentMessage!.data['type'] = "nearbyStore";
+        }
         _onNotificationClickeds(recentMessage);
       },
     );
@@ -121,29 +121,31 @@ class PushNotificationService {
 
 
   _onNotificationClickeds(RemoteMessage? message) {
-    if(message != null){
-      switch( message.data['type']) {
-        case 'nearbyStore': {
-          Get.toNamed(Routes.nearbyStorePage);
-        }
-        break;
-        case 'cart': {
-          Get.toNamed(Routes.shoppingCartPage);
-        }
-        break;
+    if (message != null) {
+      switch (message.data['type']) {
+        case 'nearbyStore':
+          {
+            Get.toNamed(Routes.nearbyStorePage);
+          }
+          break;
+        case 'cart':
+          {
+            Get.toNamed(Routes.shoppingCartPage);
+          }
+          break;
       }
     }
   }
 
-  androidNotificationChannel() => const AndroidNotificationChannel(
-      "high_impotance_channerl", "High Importance Notification",
-      description: "this user test Noti", importance: Importance.max);
+  androidNotificationChannel() =>
+      const AndroidNotificationChannel(
+          "high_impotance_channerl", "High Importance Notification",
+          description: "this user test Noti", importance: Importance.max);
 
   void _showNotification(
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
-    AndroidNotificationChannel channel,
-    RemoteMessage? message,
-  ) {
+      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
+      AndroidNotificationChannel channel,
+      RemoteMessage? message,) {
     // Get.find<HomeController>().getNotificationsNumber();
     if (kDebugMode) {
       print(message);
@@ -168,5 +170,6 @@ class PushNotificationService {
           ),
         ),
       );
+    }
   }
 }
