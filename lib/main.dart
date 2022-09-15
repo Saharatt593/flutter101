@@ -1,6 +1,7 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter101/core/config/fcm/fcm_notification.dart';
 import 'package:flutter101/core/config/routes.dart';
 import 'package:flutter101/core/di/di.dart';
 import 'package:flutter101/core/flavor/flavor_config.dart';
@@ -9,10 +10,12 @@ import 'package:flutter101/src/pages/main/main_page.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-void mainApp() {
+void mainApp() async{
   initGetX();
 
-  Firebase.initializeApp();
+  await Firebase.initializeApp();
+
+  await PushNotificationService().init();
 
   runApp(const MyApp());
 }
